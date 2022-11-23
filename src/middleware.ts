@@ -49,6 +49,28 @@ export function middleware(req: NextRequest) {
         return response;
     }
 
+    // For Login and Register Page
+    if (req.nextUrl.pathname.startsWith("/login") || req.nextUrl.pathname.startsWith("/register")) {
+
+        const qid = req.cookies.get("qid");
+        if (!qid) return NextResponse.next();
+
+        // If user is already logged in, redirect to dashboard
+
+        // Do some check here to verify if the qid value is actually valid
+
+        // Set response as redirect
+        const response = NextResponse.redirect(new URL("/dashboard", req.url));
+
+        // We can create a custom header here
+        response.headers.set("is-logged-in", qid);
+
+        // And return the response
+        return response;
+
+    }
+
+
     // Public routes
     return NextResponse.next();
 
